@@ -11,4 +11,10 @@ struct NoteData: Codable, Equatable, Identifiable {
     var id: UUID = UUID()
     var text = ""
     var image: Data?
+    
+//    func saveImage(_ image: PhotosPickerItem?) {
+//    }
+    
+//    func uiImage() -> UIImage? {
+//    }
 }
