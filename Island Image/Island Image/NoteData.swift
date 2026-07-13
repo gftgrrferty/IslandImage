@@ -6,14 +6,20 @@
 //
 
 import Foundation
+import PhotosUI
+import SwiftUI
 
 struct NoteData: Codable, Equatable, Identifiable {
     var id: UUID = UUID()
     var text = ""
     var image: Data?
     
-//    func saveImage(_ image: PhotosPickerItem?) {
-//    }
+    func saveImage(_ target: PhotosPickerItem?) {
+        // targetから画像データを取り出す
+        // 最大128pxくらいにリサイズする
+        // self.imageに取り込む
+        // self.image = ???
+    }
     
 //    func uiImage() -> UIImage? {
 //    }
