@@ -8,14 +8,22 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var notes: [NoteData] = []
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            List {
+                ForEach($notes, id: \.id) { $note in
+                    TextField("ノートを入力", text: $note.text)
+                }
+            }
+            .toolbar {
+                Button(action: {
+                    notes.append(NoteData())
+                }) {
+                    Label("追加", systemImage: "plus")
+                }
+            }
         }
-        .padding()
     }
 }
 
