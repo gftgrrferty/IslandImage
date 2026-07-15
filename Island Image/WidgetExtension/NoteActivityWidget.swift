@@ -14,12 +14,12 @@ struct NoteActivityWidget: Widget {
     static let kind = "net.abidaze.Island-Image.WidgetExtension.NoteActivityWidget"
     
     struct NoteImage: View {
-        var note: NoteData?
+        var imageURL: URL?
         var size: CGFloat? = nil
         
         var body: some View {
-            if let note,
-               let imageData = try? Data(contentsOf: note.getImageURL()!),
+            if let imageURL,
+               let imageData = try? Data(contentsOf: imageURL),
                let uiImage = UIImage(data: imageData) {
                 Image(uiImage: uiImage)
                     .resizable()
@@ -29,64 +29,56 @@ struct NoteActivityWidget: Widget {
     }
     
     struct NoteText: View {
-        var note: NoteData?
+        var noteText: String
         
         var body: some View {
-            if let note {
-                Text(note.text)
-                    .font(.headline)
-                    .bold()
-                    .foregroundStyle(.white)
-            }
+            Text(noteText)
+                .font(.headline)
+                .bold()
+                .foregroundStyle(.white)
         }
     }
     
     struct MainActivityView: View {
         @Environment(\.activityFamily) var activityFamily
-        let note = NotesManager().getCurrentNote()
+        let context: ActivityViewContext<NoteActivityAttributes>
         
         var body: some View {
-            if let note {
-                switch activityFamily {
-                case .small:
-                    HStack(spacing: 10) {
-                        NoteImage(note: note, size: 30)
-                        NoteText(note: note)
-                    }
-                case .medium:
-                    HStack(spacing: 10) {
-                        NoteImage(note: note, size: 40)
-                            .padding(.leading, 10)
-                        NoteText(note: note)
-                    }
-                    .padding()
-                @unknown default:
-                    EmptyView()
+            switch activityFamily {
+            case .small:
+                HStack(spacing: 10) {
+                    NoteImage(imageURL: context.state.imageURL, size: 30)
+                    NoteText(noteText: context.state.noteText)
                 }
-            } else {
+            case .medium:
+                HStack(spacing: 10) {
+                    NoteImage(imageURL: context.state.imageURL, size: 40)
+                        .padding(.leading, 10)
+                    NoteText(noteText: context.state.noteText)
+                }
+                .padding()
+            @unknown default:
                 EmptyView()
             }
         }
     }
     
     var body: some WidgetConfiguration {
-        let note = NotesManager().getCurrentNote()
-        
-        return ActivityConfiguration(for: NoteActivityAttributes.self) { context in
-            MainActivityView()
+        ActivityConfiguration(for: NoteActivityAttributes.self) { context in
+            MainActivityView(context: context)
         } dynamicIsland: { context in
             DynamicIsland {
                 DynamicIslandExpandedRegion(.leading) {
-                    NoteImage(note: note, size: 30)
+                    NoteImage(imageURL: context.state.imageURL, size: 30)
                 }
                 DynamicIslandExpandedRegion(.center) {
-                    NoteText(note: note)
+                    NoteText(noteText: context.state.noteText)
                 }
             } compactLeading: {
-                NoteImage(note: note)
+                NoteImage(imageURL: context.state.imageURL)
             } compactTrailing: {
             } minimal: {
-                NoteImage(note: note)
+                NoteImage(imageURL: context.state.imageURL)
             }
         }
     }

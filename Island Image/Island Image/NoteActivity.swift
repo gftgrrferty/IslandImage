@@ -10,7 +10,8 @@ import Foundation
 
 nonisolated struct NoteActivityAttributes: ActivityAttributes {
     struct ContentState: Codable, Hashable {
-        var noteID: UUID = UUID()
+        var noteText: String
+        var imageURL: URL?
     }
 }
 
@@ -27,8 +28,13 @@ class NoteActivityManager {
         
         endAll()
         
+        let currentNote = NotesManager().getCurrentNote()
+        
         let attributes = NoteActivityAttributes()
-        let contentState = NoteActivityAttributes.ContentState()
+        let contentState = NoteActivityAttributes.ContentState(
+            noteText: currentNote?.text ?? "",
+            imageURL: currentNote?.getImageURL()
+        )
         
         let content = ActivityContent(
             state: contentState,
@@ -48,16 +54,9 @@ class NoteActivityManager {
     
     static func endAll() {
         let activities = Activity<NoteActivityAttributes>.activities
-        let contentState = NoteActivityAttributes.ContentState()
-        
-        let content = ActivityContent(
-            state: contentState,
-            staleDate: nil
-        )
-        
         Task.detached(priority: .userInitiated) {
             for activity in activities {
-                await activity.end(content, dismissalPolicy: .immediate)
+                await activity.end(activity.content, dismissalPolicy: .immediate)
             }
         }
     }
