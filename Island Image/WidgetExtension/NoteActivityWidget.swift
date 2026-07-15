@@ -24,6 +24,7 @@ struct NoteActivityWidget: Widget {
                     .resizable()
                     .interpolation(shouldPixelate(uiImage) ? .none : .medium)
                     .scaledToFit()
+                    .frame(maxWidth: 45, maxHeight: 110/3)
             }
         }
         
@@ -48,10 +49,9 @@ struct NoteActivityWidget: Widget {
         var body: some View {
             HStack(alignment: .center, spacing: 10) {
                 NoteImage(imageURL: context.state.imageURL)
-                    .padding(10)
-                    .frame(height: 80)
                 NoteText(noteText: context.state.noteText)
             }
+            .activityBackgroundTint(.clear)
         }
     }
     
@@ -61,17 +61,26 @@ struct NoteActivityWidget: Widget {
         } dynamicIsland: { context in
             DynamicIsland {
                 DynamicIslandExpandedRegion(.leading) {
-                    NoteImage(imageURL: context.state.imageURL)
-                        .padding(5)
+                    VStack(alignment: .center) {
+                        Spacer()
+                        NoteImage(imageURL: context.state.imageURL)
+                        Spacer()
+                    }
+                    .frame(height: .infinity)
                 }
                 DynamicIslandExpandedRegion(.center) {
                     NoteText(noteText: context.state.noteText)
                 }
             } compactLeading: {
                 NoteImage(imageURL: context.state.imageURL)
+//                    .padding(.leading, 4.5)
             } compactTrailing: {
+//                NoteImage(imageURL: context.state.imageURL)
+//                    .padding(.trailing, 4.5)
             } minimal: {
                 NoteImage(imageURL: context.state.imageURL)
+//                    .padding(1.5)
+                    .aspectRatio(45/49, contentMode: .fit)
             }
         }
     }
