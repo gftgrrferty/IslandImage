@@ -30,6 +30,16 @@ struct ContentView: View {
                             }
                         }
                     }
+                    // Live Activityを開始するためのデモボタン
+                    .swipeActions(edge: .leading) {
+                        Button {
+                            manager.setCurrentNote(note)
+                            NoteActivityManager.start()
+                        } label: {
+                            Label("ライブアクティビティ", systemImage: "play")
+                        }
+                        .tint(.pink)
+                    }
                     .swipeActions(edge: .trailing) {
                         // 削除ボタン
                         Button(role: .destructive) {
