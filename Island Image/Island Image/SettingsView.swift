@@ -7,6 +7,7 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @Environment(\.dismiss) private var dismiss
     @AppStorage("hideLockScreenNote", store: userDefaults) var hideLockScreenNote: Bool = false
     @AppStorage("autoPaddingDynamicIsland", store: userDefaults) var autoPaddingDynamicIsland: Bool = false
     @AppStorage("trailingImage", store: userDefaults) var trailingImage: Bool = false
@@ -46,6 +47,15 @@ struct SettingsView: View {
                 }
                 NavigationLink(destination: AboutView()) {
                     Text("情報")
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Label("閉じる", systemImage: "xmark")
+                    }
                 }
             }
             .navigationTitle("設定")
