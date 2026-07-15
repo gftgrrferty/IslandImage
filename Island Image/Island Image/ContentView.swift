@@ -18,8 +18,7 @@ struct ContentView: View {
         NavigationStack {
             List {
                 ForEach($notes, id: \.id) { $note in
-                    VStack {
-                        TextField("ノートを入力", text: $note.text)
+                    HStack(spacing: 10) {
                         // 画像を表示
                         if let imageURL = note.getImageURL() {
                             // 画像を非同期で表示する
@@ -27,10 +26,14 @@ struct ContentView: View {
                                 //
                                 image.image?
                                     .resizable()
+                                    .interpolation(.none)
                                     .scaledToFit()
+                                    .frame(width: 50)
                             }
                         }
+                        TextField("ノートを入力", text: $note.text)
                     }
+                    .frame(minHeight: 50)
                     // Live Activityを開始するためのデモボタン
                     .swipeActions(edge: .leading) {
                         Button {
