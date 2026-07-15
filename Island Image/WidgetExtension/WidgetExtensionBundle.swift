@@ -17,5 +17,6 @@ let appGroupID: String = "group.net.abidaze.Island-Image"
 @main
 struct WidgetExtensionBundle: WidgetBundle {
     var body: some Widget {
+        NoteActivityWidget()
     }
 }

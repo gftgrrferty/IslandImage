@@ -26,6 +26,17 @@ class NotesManager {
     }
     
     func setCurrentNote(_ note: NoteData) {
-        userDefaults.set(note.id, forKey: "currentNote")
+        userDefaults.set(note.id.uuidString, forKey: "currentNote")
+    }
+    
+    func getCurrentNote() -> NoteData? {
+        let idString = userDefaults.string(forKey: "currentNote")
+        let notes = getNotes()
+        
+        if let idString, let id = UUID(uuidString: idString) {
+            return notes.first(where: { $0.id == id }) ?? nil
+        }
+        
+        return nil
     }
 }
