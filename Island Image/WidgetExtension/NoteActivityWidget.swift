@@ -15,7 +15,6 @@ struct NoteActivityWidget: Widget {
     
     struct NoteImage: View {
         var imageURL: URL?
-        var size: CGFloat? = nil
         
         var body: some View {
             if let imageURL,
@@ -23,8 +22,13 @@ struct NoteActivityWidget: Widget {
                let uiImage = UIImage(data: imageData) {
                 Image(uiImage: uiImage)
                     .resizable()
+                    .interpolation(shouldPixelate(uiImage) ? .none : .medium)
                     .scaledToFit()
             }
+        }
+        
+        private func shouldPixelate(_ image: UIImage) -> Bool {
+            image.size.width <= 64 && image.size.height <= 64
         }
     }
     
@@ -33,32 +37,20 @@ struct NoteActivityWidget: Widget {
         
         var body: some View {
             Text(noteText)
-                .font(.headline)
-                .bold()
+                .font(.title3)
                 .foregroundStyle(.white)
         }
     }
     
     struct MainActivityView: View {
-        @Environment(\.activityFamily) var activityFamily
         let context: ActivityViewContext<NoteActivityAttributes>
         
         var body: some View {
-            switch activityFamily {
-            case .small:
-                HStack(spacing: 10) {
-                    NoteImage(imageURL: context.state.imageURL, size: 30)
-                    NoteText(noteText: context.state.noteText)
-                }
-            case .medium:
-                HStack(spacing: 10) {
-                    NoteImage(imageURL: context.state.imageURL, size: 40)
-                        .padding(.leading, 10)
-                    NoteText(noteText: context.state.noteText)
-                }
-                .padding()
-            @unknown default:
-                EmptyView()
+            HStack(alignment: .center, spacing: 10) {
+                NoteImage(imageURL: context.state.imageURL)
+                    .padding(10)
+                    .frame(height: 80)
+                NoteText(noteText: context.state.noteText)
             }
         }
     }
@@ -69,7 +61,8 @@ struct NoteActivityWidget: Widget {
         } dynamicIsland: { context in
             DynamicIsland {
                 DynamicIslandExpandedRegion(.leading) {
-                    NoteImage(imageURL: context.state.imageURL, size: 30)
+                    NoteImage(imageURL: context.state.imageURL)
+                        .padding(5)
                 }
                 DynamicIslandExpandedRegion(.center) {
                     NoteText(noteText: context.state.noteText)
