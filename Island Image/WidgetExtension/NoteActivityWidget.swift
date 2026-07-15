@@ -48,11 +48,14 @@ struct NoteActivityWidget: Widget {
         
         var body: some View {
             HStack(alignment: .center, spacing: 10) {
-                if context.state.imageURL != nil {
+                if !userDefaults.bool(forKey: "trailingImage") {
                     NoteImage(imageURL: context.state.imageURL)
                 }
                 if !context.state.noteText.isEmpty {
                     NoteText(noteText: context.state.noteText)
+                }
+                if userDefaults.bool(forKey: "trailingImage") {
+                    NoteImage(imageURL: context.state.imageURL)
                 }
             }
         }
@@ -70,7 +73,9 @@ struct NoteActivityWidget: Widget {
             let autoPadding = userDefaults.bool(forKey: "autoPaddingDynamicIsland")
             
             return DynamicIsland {
-                DynamicIslandExpandedRegion(.leading) {
+                DynamicIslandExpandedRegion(
+                    userDefaults.bool(forKey: "trailingImage") ? .trailing : .leading
+                ) {
                     VStack(alignment: .center) {
                         Spacer()
                         NoteImage(imageURL: context.state.imageURL)
