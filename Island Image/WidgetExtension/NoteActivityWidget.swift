@@ -55,15 +55,21 @@ struct NoteActivityWidget: Widget {
                     NoteText(noteText: context.state.noteText)
                 }
             }
-            .activityBackgroundTint(.clear)
         }
     }
     
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: NoteActivityAttributes.self) { context in
-            MainActivityView(context: context)
+            Group {
+                if !userDefaults.bool(forKey: "hideLockScreenNote") {
+                    MainActivityView(context: context)
+                }
+            }
+            .activityBackgroundTint(.clear)
         } dynamicIsland: { context in
-            DynamicIsland {
+            let autoPadding = userDefaults.bool(forKey: "autoPaddingDynamicIsland")
+            
+            return DynamicIsland {
                 DynamicIslandExpandedRegion(.leading) {
                     VStack(alignment: .center) {
                         Spacer()
@@ -76,14 +82,18 @@ struct NoteActivityWidget: Widget {
                     NoteText(noteText: context.state.noteText)
                 }
             } compactLeading: {
-                NoteImage(imageURL: context.state.imageURL)
-//                    .padding(.leading, 4.5)
+                if !userDefaults.bool(forKey: "trailingImage") {
+                    NoteImage(imageURL: context.state.imageURL)
+                        .padding(.leading, autoPadding ? 4.5 : 0)
+                }
             } compactTrailing: {
-//                NoteImage(imageURL: context.state.imageURL)
-//                    .padding(.trailing, 4.5)
+                if userDefaults.bool(forKey: "trailingImage") {
+                    NoteImage(imageURL: context.state.imageURL)
+                        .padding(.trailing, autoPadding ? 4.5 : 0)
+                }
             } minimal: {
                 NoteImage(imageURL: context.state.imageURL)
-//                    .padding(1.5)
+                    .padding(autoPadding ? 1.5 : 0)
                     .aspectRatio(45/49, contentMode: .fit)
             }
         }
