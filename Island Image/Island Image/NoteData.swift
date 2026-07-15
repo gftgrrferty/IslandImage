@@ -20,7 +20,7 @@ struct NoteData: Codable, Equatable, Identifiable {
         guard let data = try? await item.loadTransferable(type: Data.self) else { return }
         // App Groupの共有のディレクトリのパスを取得
         guard var itemURL = FileManager.default.containerURL(
-            forSecurityApplicationGroupIdentifier: "group.net.abidaze.Island-Image"
+            forSecurityApplicationGroupIdentifier: appGroupID
         ) else {
             return
         }
@@ -66,7 +66,7 @@ struct NoteData: Codable, Equatable, Identifiable {
     func getImageURL() -> URL? {
         guard let image = self.image else { return nil }
         guard var itemURL = FileManager.default.containerURL(
-            forSecurityApplicationGroupIdentifier: "group.net.abidaze.Island-Image"
+            forSecurityApplicationGroupIdentifier: appGroupID
         ) else {
             return nil
         }
@@ -78,7 +78,7 @@ struct NoteData: Codable, Equatable, Identifiable {
     func deleteImage() {
         guard let image = self.image else { return }
         guard var itemURL = FileManager.default.containerURL(
-            forSecurityApplicationGroupIdentifier: "group.net.abidaze.Island-Image"
+            forSecurityApplicationGroupIdentifier: appGroupID
         ) else {
             return
         }

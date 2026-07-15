@@ -8,7 +8,7 @@
 import Foundation
 
 class NotesManager {
-    let userDefaults = UserDefaults(suiteName: "group.net.abidaze.Island-Image")!
+    let userDefaults = UserDefaults(suiteName: appGroupID)!
     
     func getNotes() -> [NoteData] {
         if let data = userDefaults.data(forKey: "noteData"), // dataがあるかを確認する
