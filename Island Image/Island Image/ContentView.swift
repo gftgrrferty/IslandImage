@@ -30,6 +30,15 @@ struct ContentView: View {
                             }
                         }
                     }
+                    .swipeActions(edge: .trailing) {
+                        // 削除ボタン
+                        Button(role: .destructive) {
+                            note.deleteImage()
+                            notes.removeAll { $0.id == note.id }
+                        } label: {
+                            Label("削除", systemImage: "trash")
+                        }
+                    }
                 }
             }
             .toolbar {
@@ -51,6 +60,7 @@ struct ContentView: View {
                 await newNote.saveImage(pickerItem)
                 notes.append(newNote)
             }
+            self.pickerItem = nil
         }
         // NavigationStackが表示された時に実行される。
         .onAppear {

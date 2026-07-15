@@ -24,4 +24,8 @@ class NotesManager {
             userDefaults.set(data, forKey: "noteData")
         }
     }
+    
+    func setCurrentNote(_ note: NoteData) {
+        userDefaults.set(note.id, forKey: "currentNote")
+    }
 }

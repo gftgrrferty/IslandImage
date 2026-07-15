@@ -75,6 +75,17 @@ struct NoteData: Codable, Equatable, Identifiable {
         return itemURL
     }
     
+    func deleteImage() {
+        guard let image = self.image else { return }
+        guard var itemURL = FileManager.default.containerURL(
+            forSecurityApplicationGroupIdentifier: "group.net.abidaze.Island-Image"
+        ) else {
+            return
+        }
+        itemURL.appendPathComponent("note_image", isDirectory: true)
+        itemURL.appendPathComponent(image)
+        _ = try? FileManager.default.removeItem(at: itemURL)
+    }
 //    func uiImage() -> UIImage? {
 //    }
 }
