@@ -48,8 +48,12 @@ struct NoteActivityWidget: Widget {
         
         var body: some View {
             HStack(alignment: .center, spacing: 10) {
-                NoteImage(imageURL: context.state.imageURL)
-                NoteText(noteText: context.state.noteText)
+                if context.state.imageURL != nil {
+                    NoteImage(imageURL: context.state.imageURL)
+                }
+                if !context.state.noteText.isEmpty {
+                    NoteText(noteText: context.state.noteText)
+                }
             }
             .activityBackgroundTint(.clear)
         }
