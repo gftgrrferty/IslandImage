@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7ADD428D3007B1E2004E0B7C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADD428B3007B1E0004E0B7C /* Constants.swift */; };
+		7ADD428E3007B235004E0B7C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADD428B3007B1E0004E0B7C /* Constants.swift */; };
 		7AF064EA300714D60026EFAB /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AF064E9300714D60026EFAB /* WidgetKit.framework */; };
 		7AF064EC300714D60026EFAB /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AF064EB300714D60026EFAB /* SwiftUI.framework */; };
 		7AF064F7300714D70026EFAB /* WidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7AF064E7300714D60026EFAB /* WidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -37,6 +39,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7ADD428B3007B1E0004E0B7C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		7AF064E7300714D60026EFAB /* WidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AF064E9300714D60026EFAB /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		7AF064EB300714D60026EFAB /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -113,6 +116,7 @@
 		A89D9DFD2FFDD5170000C86A = {
 			isa = PBXGroup;
 			children = (
+				7ADD428B3007B1E0004E0B7C /* Constants.swift */,
 				A89D9E082FFDD5170000C86A /* Island Image */,
 				7AF064ED300714D60026EFAB /* WidgetExtension */,
 				7AF064E8300714D60026EFAB /* Frameworks */,
@@ -238,6 +242,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7ADD428E3007B235004E0B7C /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -245,6 +250,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7ADD428D3007B1E2004E0B7C /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
