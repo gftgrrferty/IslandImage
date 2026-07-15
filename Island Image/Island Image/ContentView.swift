@@ -75,6 +75,7 @@ struct ContentView: View {
         }
         .onChange(of: notes) {
             manager.saveNotes(notes)
+            NoteActivityManager.refresh()
         }
         // 画像が選択されたら新しいノートを作成して画像を保存する。
         .onChange(of: pickerItem) {
