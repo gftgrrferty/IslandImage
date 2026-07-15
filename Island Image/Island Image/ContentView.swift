@@ -12,6 +12,7 @@ struct ContentView: View {
     private let manager = NotesManager()
     @State private var pickerItem: PhotosPickerItem?
     @State private var notes: [NoteData] = []
+    @State var isShowSettingsView = false
     
     var body: some View {
         NavigationStack {
@@ -52,8 +53,20 @@ struct ContentView: View {
                 }
             }
             .toolbar {
-                PhotosPicker(selection: $pickerItem, matching: .images) {
-                    Label("追加", systemImage: "plus")
+                ToolbarItem(placement: .topBarTrailing) {
+                    PhotosPicker(selection: $pickerItem, matching: .images) {
+                        Label("追加", systemImage: "plus")
+                    }
+                }
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        isShowSettingsView = true
+                    } label: {
+                        Label("設定", systemImage: "gearshape")
+                    }
+                    .sheet(isPresented: $isShowSettingsView) {
+                        SettingsView()
+                    }
                 }
             }
         }

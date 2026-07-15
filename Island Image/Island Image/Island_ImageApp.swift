@@ -13,6 +13,8 @@ let appGroupID: String = "group.net.cizzuk.test.net.abidaze.Island-Image"
 let appGroupID: String = "group.net.abidaze.Island-Image"
 #endif
 
+let userDefaults = UserDefaults(suiteName: appGroupID)!
+
 @main
 struct Island_ImageApp: App {
     var body: some Scene {
