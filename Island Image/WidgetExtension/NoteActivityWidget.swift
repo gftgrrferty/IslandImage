@@ -75,7 +75,7 @@ struct NoteActivityWidget: Widget {
                 NoteImage(imageURL: context.state.imageURL)
 //                    .padding(.leading, 4.5)
             } compactTrailing: {
-                NoteImage(imageURL: context.state.imageURL)
+//                NoteImage(imageURL: context.state.imageURL)
 //                    .padding(.trailing, 4.5)
             } minimal: {
                 NoteImage(imageURL: context.state.imageURL)
