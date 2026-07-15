@@ -60,4 +60,13 @@ class NoteActivityManager {
             }
         }
     }
+    
+    static func refresh() {
+        let activities = Activity<NoteActivityAttributes>.activities
+        Task {
+            for activity in activities {
+                await activity.update(activity.content)
+            }
+        }
+    }
 }

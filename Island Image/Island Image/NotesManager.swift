@@ -8,8 +8,6 @@
 import Foundation
 
 class NotesManager {
-    let userDefaults = UserDefaults(suiteName: appGroupID)!
-    
     func getNotes() -> [NoteData] {
         if let data = userDefaults.data(forKey: "noteData"), // dataがあるかを確認する
            let notes = try? JSONDecoder().decode([NoteData].self, from: data) { // jsonからnoteDataにできるか
