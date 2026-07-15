@@ -1,10 +1,11 @@
 //
-//  Island_ImageApp.swift
-//  Island Image
+//  WidgetExtensionBundle.swift
+//  WidgetExtension
 //
-//  Created by gftgrrferty on 2026/07/08.
+//  Created by Cizzuk on 2026/07/15.
 //
 
+import WidgetKit
 import SwiftUI
 
 #if DEBUG_DROPCAT
@@ -14,10 +15,7 @@ let appGroupID: String = "group.net.abidaze.Island-Image"
 #endif
 
 @main
-struct Island_ImageApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
+struct WidgetExtensionBundle: WidgetBundle {
+    var body: some Widget {
     }
 }
