@@ -44,6 +44,9 @@ struct SettingsView: View {
                 } footer: {
                     Text("Dynamic Islandで画像を右側に表示します。")
                 }
+                NavigationLink(destination: AboutView()) {
+                    Text("情報")
+                }
             }
             .navigationTitle("設定")
             .navigationBarTitleDisplayMode(.inline)
