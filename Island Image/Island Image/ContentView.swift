@@ -55,12 +55,12 @@ struct ContentView: View {
                     .swipeActions(edge: .trailing) {
                         // 削除ボタン
                         Button(role: .destructive) {
-                            note.deleteImage()
-                            notes.removeAll { $0.id == note.id }
-                            manager.saveNotes(notes)
                             if manager.getCurrentNote()?.id == note.id {
                                 NoteActivityManager.endAll()
                             }
+                            note.deleteImage()
+                            notes.removeAll { $0.id == note.id }
+                            manager.saveNotes(notes)
                         } label: {
                             Label("削除", systemImage: "trash")
                         }
