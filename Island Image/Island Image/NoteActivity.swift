@@ -28,22 +28,14 @@ class NoteActivityManager {
         
         endAll()
         
-        let currentNote = NotesManager().getCurrentNote()
-        
-        let attributes = NoteActivityAttributes()
-        let contentState = NoteActivityAttributes.ContentState(
-            noteText: currentNote?.text ?? "",
-            imageURL: currentNote?.getImageURL()
-        )
-        
         let content = ActivityContent(
-            state: contentState,
+            state: createContentState(),
             staleDate: endDate
         )
         
         do {
             _ = try Activity.request(
-                attributes: attributes,
+                attributes: NoteActivityAttributes(),
                 content: content,
                 pushType: nil
             )
@@ -63,10 +55,29 @@ class NoteActivityManager {
     
     static func refresh() {
         let activities = Activity<NoteActivityAttributes>.activities
+        
         Task {
             for activity in activities {
-                await activity.update(activity.content)
+                let content = ActivityContent(
+                    state: createContentState(),
+                    staleDate: activity.content.staleDate
+                )
+                
+                await activity.update(content)
             }
         }
+    }
+    
+    private static func createContentState() -> NoteActivityAttributes.ContentState {
+        let currentNote = NotesManager().getCurrentNote()
+        
+        let attributes = NoteActivityAttributes()
+        
+        let contentState = NoteActivityAttributes.ContentState(
+            noteText: currentNote?.text ?? "",
+            imageURL: currentNote?.getImageURL()
+        )
+        
+        return contentState
     }
 }
