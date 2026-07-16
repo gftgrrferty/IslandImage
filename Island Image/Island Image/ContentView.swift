@@ -28,62 +28,72 @@ struct ContentView: View {
                         }
                     }
                 }
-                ForEach($notes, id: \.id) { $note in
-                    HStack(spacing: 20) {
-                        // 画像を表示
-                        if let imageURL = note.getImageURL() {
-                            // 画像を非同期で表示する
-                            AsyncImage(url: imageURL) { image in
-                                //
-                                image.image?
-                                    .resizable()
-                                    .interpolation(.none)
-                                    .scaledToFit()
-                                    .frame(width: 50)
-                            }
-                        }
-                        TextField("ノートを入力", text: $note.text)
-                            .submitLabel(.done)
-                            .onSubmit {
-                                manager.saveNotes(notes)
-                                if manager.getCurrentNote()?.id == note.id {
-                                    NoteActivityManager.refresh()
+                
+                Section {
+                    ForEach($notes, id: \.id) { $note in
+                        HStack(spacing: 20) {
+                            // 画像を表示
+                            if let imageURL = note.getImageURL() {
+                                // 画像を非同期で表示する
+                                AsyncImage(url: imageURL) { image in
+                                    //
+                                    image.image?
+                                        .resizable()
+                                        .interpolation(.none)
+                                        .scaledToFit()
+                                        .frame(width: 50)
                                 }
                             }
-                    }
-                    .frame(minHeight: 50)
-                    // Live Activityを開始するためのボタン
-                    .swipeActions(edge: .leading) {
-                        if isActivityActive && note.id.uuidString == currentNote {
-                            Button {
-                                NoteActivityManager.endAll()
-                                isActivityActive = false
-                            } label: {
-                                Label("アクティビティ停止", systemImage: "stop")
+                            TextField("ノートを入力", text: $note.text)
+                                .submitLabel(.done)
+                                .onSubmit {
+                                    manager.saveNotes(notes)
+                                    if manager.getCurrentNote()?.id == note.id {
+                                        NoteActivityManager.refresh()
+                                    }
+                                }
+                        }
+                        .frame(minHeight: 50)
+                        // Live Activityを開始するためのボタン
+                        .swipeActions(edge: .leading) {
+                            if isActivityActive && note.id.uuidString == currentNote {
+                                Button {
+                                    NoteActivityManager.endAll()
+                                    isActivityActive = false
+                                } label: {
+                                    Label("アクティビティ停止", systemImage: "stop")
+                                }
+                                .tint(.red)
+                            } else {
+                                Button {
+                                    manager.setCurrentNote(note)
+                                    NoteActivityManager.start()
+                                    isActivityActive = true
+                                } label: {
+                                    Label("アクティビティ開始", systemImage: "play")
+                                }
+                                .tint(.blue)
                             }
-                            .tint(.red)
-                        } else {
-                            Button {
-                                manager.setCurrentNote(note)
-                                NoteActivityManager.start()
-                                isActivityActive = true
+                        }
+                        .swipeActions(edge: .trailing) {
+                            // 削除ボタン
+                            Button(role: .destructive) {
+                                if manager.getCurrentNote()?.id == note.id {
+                                    NoteActivityManager.endAll()
+                                }
+                                note.deleteImage()
+                                notes.removeAll { $0.id == note.id }
+                                manager.saveNotes(notes)
                             } label: {
-                                Label("アクティビティ開始", systemImage: "play")
+                                Label("削除", systemImage: "trash")
                             }
-                            .tint(.blue)
                         }
                     }
-                    .swipeActions(edge: .trailing) {
-                        // 削除ボタン
-                        Button(role: .destructive) {
-                            if manager.getCurrentNote()?.id == note.id {
-                                NoteActivityManager.endAll()
-                            }
-                            note.deleteImage()
-                            notes.removeAll { $0.id == note.id }
-                            manager.saveNotes(notes)
-                        } label: {
-                            Label("削除", systemImage: "trash")
+                } footer: {
+                    if !notes.isEmpty {
+                        VStack {
+                            Text("ノートを横にスワイプしてアクティビティを開始。")
+                                .frame(maxWidth: .infinity, alignment: .center)
                         }
                     }
                 }
