@@ -32,6 +32,13 @@ struct ContentView: View {
                             }
                         }
                         TextField("ノートを入力", text: $note.text)
+                            .submitLabel(.done)
+                            .onSubmit {
+                                manager.saveNotes(notes)
+                                if manager.getCurrentNote()?.id == note.id {
+                                    NoteActivityManager.refresh()
+                                }
+                            }
                     }
                     .frame(minHeight: 50)
                     // Live Activityを開始するためのデモボタン
@@ -49,6 +56,10 @@ struct ContentView: View {
                         Button(role: .destructive) {
                             note.deleteImage()
                             notes.removeAll { $0.id == note.id }
+                            manager.saveNotes(notes)
+                            if manager.getCurrentNote()?.id == note.id {
+                                NoteActivityManager.endAll()
+                            }
                         } label: {
                             Label("削除", systemImage: "trash")
                         }
@@ -73,10 +84,6 @@ struct ContentView: View {
                 }
             }
         }
-        .onChange(of: notes) {
-            manager.saveNotes(notes)
-            NoteActivityManager.refresh()
-        }
         // 画像が選択されたら新しいノートを作成して画像を保存する。
         .onChange(of: pickerItem) {
             // ここでpickerItemがnilでないことを確定させる
@@ -86,6 +93,7 @@ struct ContentView: View {
             Task {
                 await newNote.saveImage(pickerItem)
                 notes.append(newNote)
+                manager.saveNotes(notes)
             }
             self.pickerItem = nil
         }
