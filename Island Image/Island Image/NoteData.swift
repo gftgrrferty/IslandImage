@@ -14,6 +14,7 @@ struct NoteData: Codable, Equatable, Identifiable {
     var text = ""
     var image: String?
     
+    #if !EXTENSION
     // 画像を保存する非同期関数
     mutating func saveImage(_ item: PhotosPickerItem) async {
         // 画像をData型にする
@@ -58,6 +59,7 @@ struct NoteData: Codable, Equatable, Identifiable {
         self.image = itemURL.lastPathComponent
         print(itemURL)
     }
+    #endif
     
     // 画像のURLを取得
     func getImageURL() -> URL? {
