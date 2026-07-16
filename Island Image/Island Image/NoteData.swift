@@ -18,6 +18,13 @@ struct NoteData: Codable, Equatable, Identifiable {
     mutating func saveImage(_ item: PhotosPickerItem) async {
         // 画像をData型にする
         guard let data = try? await item.loadTransferable(type: Data.self) else { return }
+        // Data型からUIImage型にする
+        guard let uiimage = UIImage(data: data) else { return }
+        // 画像をリサイズ
+        let newimage = ImageSupport.resize(image: uiimage)
+        // リサイズした画像をpngのData型にする
+        guard let newdata = newimage.pngData() else { return }
+        
         // App Groupの共有のディレクトリのパスを取得
         guard var itemURL = FileManager.default.containerURL(
             forSecurityApplicationGroupIdentifier: appGroupID
@@ -37,23 +44,22 @@ struct NoteData: Codable, Equatable, Identifiable {
         }
         // 画像のファイル名をノートのUUIDにする
         itemURL.appendPathComponent(self.id.uuidString)
-        
-        // 画像の拡張子を判断する
-        let ext = item.supportedContentTypes.first?.preferredFilenameExtension ?? ""
-
         // 判断した拡張子をファイル名に追加
-        itemURL.appendPathExtension(ext)
+        itemURL.appendPathExtension("png")
+        
         // ファイルを作成
         do {
-            try data.write(to: itemURL)
+            try newdata.write(to: itemURL)
         } catch {
             return
         }
+        
         // ファイル名を保存
         self.image = itemURL.lastPathComponent
         print(itemURL)
     }
     
+    // 画像のURLを取得
     func getImageURL() -> URL? {
         guard let image = self.image else { return nil }
         guard var itemURL = FileManager.default.containerURL(
@@ -66,6 +72,7 @@ struct NoteData: Codable, Equatable, Identifiable {
         return itemURL
     }
     
+    // 画像削除
     func deleteImage() {
         guard let image = self.image else { return }
         guard var itemURL = FileManager.default.containerURL(
