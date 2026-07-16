@@ -71,8 +71,6 @@ class NoteActivityManager {
     private static func createContentState() -> NoteActivityAttributes.ContentState {
         let currentNote = NotesManager().getCurrentNote()
         
-        let attributes = NoteActivityAttributes()
-        
         let contentState = NoteActivityAttributes.ContentState(
             noteText: currentNote?.text ?? "",
             imageURL: currentNote?.getImageURL()
