@@ -14,6 +14,8 @@ struct ContentView: View {
     @State private var pickerItem: PhotosPickerItem?
     @State private var notes: [NoteData] = []
     @State var isShowSettingsView = false
+    @State var isActivityActive = false
+    @AppStorage("currentNote", store: userDefaults) var currentNote: String = ""
     
     var body: some View {
         NavigationStack {
@@ -42,15 +44,26 @@ struct ContentView: View {
                             }
                     }
                     .frame(minHeight: 50)
-                    // Live Activityを開始するためのデモボタン
+                    // Live Activityを開始するためのボタン
                     .swipeActions(edge: .leading) {
-                        Button {
-                            manager.setCurrentNote(note)
-                            NoteActivityManager.start()
-                        } label: {
-                            Label("ライブアクティビティ", systemImage: "play")
+                        if isActivityActive && note.id.uuidString == currentNote {
+                            Button {
+                                NoteActivityManager.endAll()
+                                isActivityActive = false
+                            } label: {
+                                Label("アクティビティ停止", systemImage: "stop")
+                            }
+                            .tint(.red)
+                        } else {
+                            Button {
+                                manager.setCurrentNote(note)
+                                NoteActivityManager.start()
+                                isActivityActive = true
+                            } label: {
+                                Label("アクティビティ開始", systemImage: "play")
+                            }
+                            .tint(.blue)
                         }
-                        .tint(.pink)
                     }
                     .swipeActions(edge: .trailing) {
                         // 削除ボタン
@@ -94,7 +107,8 @@ struct ContentView: View {
             case .inactive:
                 break
             case .active:
-                break
+                // NoteActivityManagerのisActiveからLive Activityがオンかオフかを取得して、isActivityActiveに返り値を入れる
+                isActivityActive = NoteActivityManager.isActive()
             @unknown default:
                 break
             }
