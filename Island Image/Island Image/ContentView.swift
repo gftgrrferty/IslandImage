@@ -18,7 +18,7 @@ struct ContentView: View {
         NavigationStack {
             List {
                 ForEach($notes, id: \.id) { $note in
-                    HStack(spacing: 10) {
+                    HStack(spacing: 20) {
                         // 画像を表示
                         if let imageURL = note.getImageURL() {
                             // 画像を非同期で表示する
