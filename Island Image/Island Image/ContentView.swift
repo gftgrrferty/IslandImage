@@ -10,6 +10,7 @@ import SwiftUI
 
 struct ContentView: View {
     private let manager = NotesManager()
+    @Environment(\.scenePhase) private var scenePhase
     @State private var pickerItem: PhotosPickerItem?
     @State private var notes: [NoteData] = []
     @State var isShowSettingsView = false
@@ -82,6 +83,20 @@ struct ContentView: View {
                         SettingsView()
                     }
                 }
+            }
+        }
+        // バックグラウンドに行ったら保存してリフレッシュ
+        .onChange(of: scenePhase) {
+            switch scenePhase {
+            case .background:
+                manager.saveNotes(notes)
+                NoteActivityManager.refresh()
+            case .inactive:
+                break
+            case .active:
+                break
+            @unknown default:
+                break
             }
         }
         // 画像が選択されたら新しいノートを作成して画像を保存する。
