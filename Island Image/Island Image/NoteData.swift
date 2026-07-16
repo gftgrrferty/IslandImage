@@ -39,17 +39,8 @@ struct NoteData: Codable, Equatable, Identifiable {
         itemURL.appendPathComponent(self.id.uuidString)
         
         // 画像の拡張子を判断する
-        let ext: String
-        switch item.supportedContentTypes.first {
-        case .png:
-            ext = "png"
-        case .jpeg:
-            ext = "jpg"
-        case .heic:
-            ext = "heic"
-        default:
-            return
-        }
+        let ext = item.supportedContentTypes.first?.preferredFilenameExtension ?? ""
+
         // 判断した拡張子をファイル名に追加
         itemURL.appendPathExtension(ext)
         // ファイルを作成
