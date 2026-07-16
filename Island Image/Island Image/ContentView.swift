@@ -20,6 +20,14 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             List {
+                if notes.isEmpty {
+                    Section {} footer: {
+                        VStack {
+                            Text("画像を追加してください。")
+                                .frame(maxWidth: .infinity, alignment: .center)
+                        }
+                    }
+                }
                 ForEach($notes, id: \.id) { $note in
                     HStack(spacing: 20) {
                         // 画像を表示
