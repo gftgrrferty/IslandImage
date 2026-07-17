@@ -14,6 +14,7 @@ struct ContentView: View {
     @State private var pickerItem: PhotosPickerItem?
     @State private var notes: [NoteData] = []
     @State var isShowSettingsView = false
+    @State var isShowShortcutHintView = false
     @State var isActivityActive = false
     @AppStorage("currentNote", store: userDefaults) var currentNote: String = ""
     
@@ -91,9 +92,18 @@ struct ContentView: View {
                     }
                 } footer: {
                     if !notes.isEmpty {
-                        VStack {
+                        VStack(spacing: 10) {
                             Text("ノートを横にスワイプしてアクティビティを開始。")
                                 .frame(maxWidth: .infinity, alignment: .center)
+                            Button {
+                                isShowShortcutHintView = true
+                            } label: {
+                                Text("ショートカットでライブアクティビティを永続化する方法はこちら")
+                                    .font(.caption)
+                            }
+                            .sheet(isPresented: $isShowShortcutHintView) {
+                                ShortcutHintView()
+                            }
                         }
                     }
                 }
