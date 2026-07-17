@@ -11,6 +11,7 @@ struct SettingsView: View {
     @AppStorage("hideLockScreenNote", store: userDefaults) var hideLockScreenNote: Bool = false
     @AppStorage("autoPaddingDynamicIsland", store: userDefaults) var autoPaddingDynamicIsland: Bool = false
     @AppStorage("trailingImage", store: userDefaults) var trailingImage: Bool = false
+    @AppStorage("foregroundColorBlack", store: userDefaults) var foregroundColorBlack: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -44,6 +45,16 @@ struct SettingsView: View {
                     }
                 } footer: {
                     Text("Dynamic Islandで画像を右側に表示します。")
+                }
+                Section {
+                    Toggle(isOn: $foregroundColorBlack) {
+                        Text("テキストの文字を黒色に変更")
+                    }
+                    .onChange(of: foregroundColorBlack) {
+                        NoteActivityManager.refresh()
+                    }
+                } footer: {
+                    Text("ロック画面でテキストを黒色に変更します。")
                 }
                 NavigationLink(destination: AboutView()) {
                     Text("情報")
