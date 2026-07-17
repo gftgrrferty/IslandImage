@@ -56,6 +56,9 @@ struct SettingsView: View {
                 } footer: {
                     Text("ロック画面でテキストを黒色に変更します。")
                 }
+                NavigationLink(destination: ChangeIconView()) {
+                    Text("アイコン変更")
+                }
                 NavigationLink(destination: AboutView()) {
                     Text("情報")
                 }
