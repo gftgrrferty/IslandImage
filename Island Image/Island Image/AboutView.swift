@@ -29,7 +29,7 @@ struct AboutView: View {
                         Text("あび")
                     })
                 }
-                Link(destination:URL(string: "https://github.com/gftgrrferty/ImageIsland")!, label: {
+                Link(destination:URL(string: "https://github.com/gftgrrferty/IslandImage")!, label: {
                     Label("ソースコード", systemImage: "ladybug")
                 })
                 Link(destination:URL(string: "https://gftgrrferty.net/privacypolicy/")!, label: {
