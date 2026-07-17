@@ -54,6 +54,11 @@ struct ContentView: View {
                                     }
                                 }
                         }
+                        .listRowBackground(
+                            isActivityActive && note.id.uuidString == currentNote
+                            ? Color(red:200/255,green:230/255,blue:1)
+                            : nil
+                        )
                         .frame(minHeight: 50)
                         // Live Activityを開始するためのボタン
                         .swipeActions(edge: .leading) {
