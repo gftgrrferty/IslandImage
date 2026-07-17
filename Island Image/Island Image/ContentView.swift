@@ -18,6 +18,9 @@ struct ContentView: View {
     @State var isActivityActive = false
     @AppStorage("currentNote", store: userDefaults) var currentNote: String = ""
     
+    @Namespace private var ns_settingsView
+    private let id_settingsViewButton = "id_settingsViewButton"
+    
     var body: some View {
         NavigationStack {
             List {
@@ -127,8 +130,13 @@ struct ContentView: View {
                     } label: {
                         Label("設定", systemImage: "gearshape")
                     }
+                    .matchedTransitionSource(id: id_settingsViewButton, in: ns_settingsView)
                     .sheet(isPresented: $isShowSettingsView) {
                         SettingsView()
+                            .navigationTransition(.zoom(
+                                sourceID: id_settingsViewButton,
+                                in: ns_settingsView
+                            ))
                     }
                 }
             }
