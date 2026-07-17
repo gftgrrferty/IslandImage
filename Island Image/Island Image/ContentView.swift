@@ -108,6 +108,8 @@ struct ContentView: View {
                     }
                 }
             }
+            .navigationTitle("Island Image")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     PhotosPicker(selection: $pickerItem, matching: .images) {
