@@ -35,11 +35,12 @@ struct NoteActivityWidget: Widget {
     
     struct NoteText: View {
         var noteText: String
+        let foregroundColorBlack = userDefaults.bool(forKey: "foregroundColorBlack")
         
         var body: some View {
             Text(noteText)
                 .font(.title3)
-                .foregroundStyle(.white)
+                .foregroundStyle(foregroundColorBlack ? .black : .white)
         }
     }
     

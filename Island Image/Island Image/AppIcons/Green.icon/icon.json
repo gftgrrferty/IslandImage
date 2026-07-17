@@ -1,11 +1,14 @@
 {
   "fill" : {
-    "automatic-gradient" : "srgb:1.00000,0.83529,1.00000,1.00000"
+    "automatic-gradient" : "srgb:0.00000,0.66667,0.00000,1.00000"
   },
   "groups" : [
     {
       "layers" : [
         {
+          "fill" : {
+            "solid" : "srgb:0.00000,0.66667,0.00000,1.00000"
+          },
           "image-name" : "image.png",
           "name" : "image",
           "position" : {

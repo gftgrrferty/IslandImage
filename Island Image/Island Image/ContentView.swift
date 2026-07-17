@@ -14,8 +14,12 @@ struct ContentView: View {
     @State private var pickerItem: PhotosPickerItem?
     @State private var notes: [NoteData] = []
     @State var isShowSettingsView = false
+    @State var isShowShortcutHintView = false
     @State var isActivityActive = false
     @AppStorage("currentNote", store: userDefaults) var currentNote: String = ""
+    
+    @Namespace private var ns_settingsView
+    private let id_settingsViewButton = "id_settingsViewButton"
     
     var body: some View {
         NavigationStack {
@@ -53,6 +57,11 @@ struct ContentView: View {
                                     }
                                 }
                         }
+                        .listRowBackground(
+                            isActivityActive && note.id.uuidString == currentNote
+                            ? Color(red:200/255,green:230/255,blue:1)
+                            : nil
+                        )
                         .frame(minHeight: 50)
                         // Live Activityを開始するためのボタン
                         .swipeActions(edge: .leading) {
@@ -91,13 +100,24 @@ struct ContentView: View {
                     }
                 } footer: {
                     if !notes.isEmpty {
-                        VStack {
+                        VStack(spacing: 10) {
                             Text("ノートを横にスワイプしてアクティビティを開始。")
                                 .frame(maxWidth: .infinity, alignment: .center)
+                            Button {
+                                isShowShortcutHintView = true
+                            } label: {
+                                Text("ショートカットでライブアクティビティを永続化する方法はこちら")
+                                    .font(.caption)
+                            }
+                            .sheet(isPresented: $isShowShortcutHintView) {
+                                ShortcutHintView()
+                            }
                         }
                     }
                 }
             }
+            .navigationTitle("Island Image")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     PhotosPicker(selection: $pickerItem, matching: .images) {
@@ -110,8 +130,13 @@ struct ContentView: View {
                     } label: {
                         Label("設定", systemImage: "gearshape")
                     }
+                    .matchedTransitionSource(id: id_settingsViewButton, in: ns_settingsView)
                     .sheet(isPresented: $isShowSettingsView) {
                         SettingsView()
+                            .navigationTransition(.zoom(
+                                sourceID: id_settingsViewButton,
+                                in: ns_settingsView
+                            ))
                     }
                 }
             }
