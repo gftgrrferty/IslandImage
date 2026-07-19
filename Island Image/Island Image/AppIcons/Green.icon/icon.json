@@ -6,9 +6,19 @@
     {
       "layers" : [
         {
-          "fill" : {
-            "solid" : "srgb:0.00000,0.66667,0.00000,1.00000"
-          },
+          "fill-specializations" : [
+            {
+              "value" : {
+                "solid" : "srgb:0.00000,0.66667,0.00000,1.00000"
+              }
+            },
+            {
+              "appearance" : "dark",
+              "value" : {
+                "solid" : "srgb:0.00000,0.39428,0.00139,1.00000"
+              }
+            }
+          ],
           "image-name" : "image.png",
           "name" : "image",
           "position" : {
@@ -32,6 +42,14 @@
     {
       "layers" : [
         {
+          "fill-specializations" : [
+            {
+              "appearance" : "dark",
+              "value" : {
+                "solid" : "srgb:0.01462,0.12895,0.00000,1.00000"
+              }
+            }
+          ],
           "image-name" : "island.png",
           "name" : "island",
           "position" : {
