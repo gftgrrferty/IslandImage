@@ -59,7 +59,7 @@ struct ContentView: View {
                         }
                         .listRowBackground(
                             isActivityActive && note.id.uuidString == currentNote
-                            ? Color(red:200/255,green:230/255,blue:1)
+                            ? Color(red:0.5,green:0.6,blue:1,opacity:0.3)
                             : nil
                         )
                         .frame(minHeight: 50)
