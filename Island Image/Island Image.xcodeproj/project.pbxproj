@@ -201,11 +201,11 @@
 				};
 			};
 			buildConfigurationList = A89D9E012FFDD5170000C86A /* Build configuration list for PBXProject "Island Image" */;
-			developmentRegion = en;
+			developmentRegion = ja;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
 				Base,
+				ja,
 			);
 			mainGroup = A89D9DFD2FFDD5170000C86A;
 			minimizedProjectReferenceProxies = 1;
