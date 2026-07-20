@@ -7,6 +7,7 @@
 
 import PhotosUI
 import SwiftUI
+import ActivityKit
 
 struct ContentView: View {
     private let manager = NotesManager()
@@ -16,6 +17,8 @@ struct ContentView: View {
     @State var isShowSettingsView = false
     @State var isShowShortcutHintView = false
     @State var isActivityActive = false
+    @State var isShowAlert = false
+    @State var errorMessage = ""
     @AppStorage("currentNote", store: userDefaults) var currentNote: String = ""
     
     @Namespace private var ns_settingsView
@@ -76,8 +79,23 @@ struct ContentView: View {
                             } else {
                                 Button {
                                     manager.setCurrentNote(note)
-                                    NoteActivityManager.start()
-                                    isActivityActive = true
+                                    do {
+                                        try NoteActivityManager.start()
+                                        isActivityActive = true
+                                    } catch let error as ActivityAuthorizationError {
+                                        switch error {
+                                        case .denied:
+                                            errorMessage = "ライブアクティビティが許可されていません。設定で許可してください。"
+                                        case .globalMaximumExceeded:
+                                            errorMessage = "ライブアクティビティの最大数に達したため、開始できません。"
+                                        default:
+                                            errorMessage = "エラーが発生したため開始できません。"
+                                        }
+                                        isShowAlert = true
+                                    } catch {
+                                        errorMessage = "エラーが発生したため開始できません。"
+                                        isShowAlert = true
+                                    }
                                 } label: {
                                     Label("アクティビティ開始", systemImage: "play")
                                 }
@@ -115,6 +133,12 @@ struct ContentView: View {
                         }
                     }
                 }
+            }
+            .alert("エラー", isPresented: $isShowAlert) {
+                Button("OK") {
+                }
+            } message: {
+                Text(errorMessage)
             }
             .navigationTitle("Island Image")
             .navigationBarTitleDisplayMode(.inline)

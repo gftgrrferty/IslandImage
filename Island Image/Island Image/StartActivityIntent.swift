@@ -13,7 +13,7 @@ struct StartActivityIntent: LiveActivityIntent {
     // ショートカットが実行されたらperformが実行される
     @MainActor
     func perform() async throws -> some IntentResult {
-        NoteActivityManager.start()
+        try NoteActivityManager.start()
         return .result()
     }
 }
