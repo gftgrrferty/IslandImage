@@ -20,12 +20,7 @@ class NoteActivityManager {
         return !Activity<NoteActivityAttributes>.activities.isEmpty
     }
     
-    static func start(endDate: Date? = nil) {
-        guard ActivityAuthorizationInfo().areActivitiesEnabled else {
-            print("Live Activityが有効ではありません。")
-            return
-        }
-        
+    static func start(endDate: Date? = nil) throws {
         endAll()
         
         let content = ActivityContent(
@@ -33,15 +28,11 @@ class NoteActivityManager {
             staleDate: endDate
         )
         
-        do {
-            _ = try Activity.request(
-                attributes: NoteActivityAttributes(),
-                content: content,
-                pushType: nil
-            )
-        } catch {
-            print("Live Activityの開始に失敗しました: \(error)")
-        }
+        _ = try Activity.request(
+            attributes: NoteActivityAttributes(),
+            content: content,
+            pushType: nil
+        )
     }
     
     static func endAll() {
