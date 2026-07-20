@@ -32,6 +32,14 @@
     {
       "layers" : [
         {
+          "fill-specializations" : [
+            {
+              "appearance" : "dark",
+              "value" : {
+                "solid" : "srgb:0.00020,0.06532,0.19216,1.00000"
+              }
+            }
+          ],
           "image-name" : "island.png",
           "name" : "island",
           "position" : {
