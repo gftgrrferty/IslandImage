@@ -13,6 +13,7 @@ struct NoteData: Codable, Equatable, Identifiable {
     var id: UUID = UUID()
     var text = ""
     var image: String?
+    var color: UInt32?
     
     #if !EXTENSION
     // 画像を保存する非同期関数

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct EditNoteView: View {
     @Binding var note: NoteData
+    @State var tmpColor: Color = Color.clear
     
     var body: some View {
         
@@ -32,6 +33,20 @@ struct EditNoteView: View {
                 TextField("ノートを入力", text: $note.text)
                     .submitLabel(.done)
             }
+            
+            Section("Dynamic Islandの色") {
+                ColorPicker(
+                    "Dynamic Islandの色",
+                    selection: $tmpColor,
+                    supportsOpacity: false
+                )
+            }
+            .onChange(of: tmpColor) {
+                note.color = ColorHelper.uiColorToUInt32(UIColor(tmpColor))
+            }
+        }
+        .onAppear() {
+            tmpColor = ColorHelper.uInt32ToColor(note.color ?? 0x000000FF)
         }
         // 画面を閉じた時に実行される
         .onDisappear() {

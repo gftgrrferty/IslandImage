@@ -102,6 +102,7 @@ struct NoteActivityWidget: Widget {
                     .padding(autoPadding ? 1.5 : 0)
                     .aspectRatio(45/49, contentMode: .fit)
             }
+            .keylineTint(ColorHelper.uInt32ToColor(context.state.color))
         }
     }
 }

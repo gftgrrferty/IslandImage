@@ -12,6 +12,8 @@
 		7AF064EA300714D60026EFAB /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AF064E9300714D60026EFAB /* WidgetKit.framework */; };
 		7AF064EC300714D60026EFAB /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AF064EB300714D60026EFAB /* SwiftUI.framework */; };
 		7AF064F7300714D70026EFAB /* WidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7AF064E7300714D60026EFAB /* WidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A862808F308649C500B5694B /* ColorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A862808D308649B100B5694B /* ColorHelper.swift */; };
+		A862809030865A8A00B5694B /* ColorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A862808D308649B100B5694B /* ColorHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +45,7 @@
 		7AF064E7300714D60026EFAB /* WidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AF064E9300714D60026EFAB /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		7AF064EB300714D60026EFAB /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		A862808D308649B100B5694B /* ColorHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorHelper.swift; sourceTree = "<group>"; };
 		A89D9E062FFDD5170000C86A /* Island Image.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Island Image.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -117,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				7ADD428B3007B1E0004E0B7C /* Constants.swift */,
+				A862808D308649B100B5694B /* ColorHelper.swift */,
 				A89D9E082FFDD5170000C86A /* Island Image */,
 				7AF064ED300714D60026EFAB /* WidgetExtension */,
 				7AF064E8300714D60026EFAB /* Frameworks */,
@@ -243,6 +247,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7ADD428E3007B235004E0B7C /* Constants.swift in Sources */,
+				A862809030865A8A00B5694B /* ColorHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -251,6 +256,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7ADD428D3007B1E2004E0B7C /* Constants.swift in Sources */,
+				A862808F308649C500B5694B /* ColorHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
