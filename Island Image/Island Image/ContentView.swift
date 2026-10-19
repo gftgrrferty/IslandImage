@@ -39,30 +39,20 @@ struct ContentView: View {
                     
                     Section {
                         ForEach($notes, id: \.id) { $note in
-//                            HStack(spacing: 20) {
-//                                // 画像を表示
-//                                if let imageURL = note.getImageURL() {
-//                                    // 画像を非同期で表示する
-//                                    AsyncImage(url: imageURL) { image in
-//                                        //
-//                                        image.image?
-//                                            .resizable()
-//                                            .interpolation(.none)
-//                                            .scaledToFit()
-//                                            .frame(width: 50)
-//                                    }
-//                                }
-//                                TextField("ノートを入力", text: $note.text)
-//                                    .submitLabel(.done)
-//                                    .onSubmit {
-//                                        manager.saveNotes(notes)
-//                                        if manager.getCurrentNote()?.id == note.id {
-//                                            NoteActivityManager.refresh()
-//                                        }
-//                                    }
-//                            }
                             NavigationLink(destination: EditNoteView(note: $note)) {
-                                Text(note.text)
+                                HStack(spacing:20) {
+                                    if let imageURL = note.getImageURL() {
+                                        // 画像を非同期で表示する
+                                        AsyncImage(url: imageURL) { image in
+                                            image.image?
+                                                .resizable()
+                                                .interpolation(.none)
+                                                .scaledToFit()
+                                                .frame(width: 50)
+                                        }
+                                    }
+                                    Text(note.text)
+                                }
                             }
                             .id(note.id.uuidString)
                             .listRowBackground(
