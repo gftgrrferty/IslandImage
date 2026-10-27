@@ -11,6 +11,7 @@ import ActivityKit
 
 struct ContentView: View {
     private let manager = NotesManager()
+    @State private var isNotesLoaded = false
     @Environment(\.scenePhase) private var scenePhase
     @State private var pickerItem: PhotosPickerItem?
     @State private var notes: [NoteData] = []
@@ -183,11 +184,24 @@ struct ContentView: View {
         .onChange(of: scenePhase) {
             switch scenePhase {
             case .background:
-                manager.saveNotes(notes)
+                // データがある時かデータが確実に読み込めてる時
+                if !notes.isEmpty || isNotesLoaded {
+                    manager.saveNotes(notes) // データ保存
+                    isNotesLoaded = true // 保存した時点で確定
+                }
                 NoteActivityManager.refresh()
             case .inactive:
                 break
             case .active:
+                // 起動時にノートが読み込めなかった時にもう一度読み込む
+                // ノートが空の時且つ読み込みが確定してない時
+                if notes.isEmpty && !isNotesLoaded {
+                    notes = manager.getNotes() // データを読み込む
+                    // データがある時
+                    if !notes.isEmpty {
+                        isNotesLoaded = true // 確実に読み込めたのが確定
+                    }
+                }
                 // NoteActivityManagerのisActiveからLive Activityがオンかオフかを取得して、isActivityActiveに返り値を入れる
                 isActivityActive = NoteActivityManager.isActive()
             @unknown default:
@@ -196,7 +210,11 @@ struct ContentView: View {
         }
         // NavigationStackが表示された時に実行される。
         .onAppear {
-            notes = manager.getNotes()
+            notes = manager.getNotes() // データを読み込む
+            // データがある時
+            if !notes.isEmpty {
+                isNotesLoaded = true // 確実に読み込めたのが確定
+            }
         }
     }
 }
