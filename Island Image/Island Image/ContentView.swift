@@ -11,6 +11,7 @@ import ActivityKit
 
 struct ContentView: View {
     private let manager = NotesManager()
+    @State private var isNotesLoaded = false
     @Environment(\.scenePhase) private var scenePhase
     @State private var pickerItem: PhotosPickerItem?
     @State private var notes: [NoteData] = []
@@ -39,27 +40,31 @@ struct ContentView: View {
                     
                     Section {
                         ForEach($notes, id: \.id) { $note in
-                            HStack(spacing: 20) {
-                                // 画像を表示
-                                if let imageURL = note.getImageURL() {
-                                    // 画像を非同期で表示する
-                                    AsyncImage(url: imageURL) { image in
-                                        //
-                                        image.image?
-                                            .resizable()
-                                            .interpolation(.none)
-                                            .scaledToFit()
-                                            .frame(width: 50)
-                                    }
-                                }
-                                TextField("ノートを入力", text: $note.text)
-                                    .submitLabel(.done)
-                                    .onSubmit {
-                                        manager.saveNotes(notes)
-                                        if manager.getCurrentNote()?.id == note.id {
-                                            NoteActivityManager.refresh()
+                            NavigationLink(destination: EditNoteView(note: $note)) {
+                                HStack(spacing:20) {
+                                    if let imageURL = note.getImageURL(subimage: false) {
+                                        // 画像を非同期で表示する
+                                        AsyncImage(url: imageURL) { image in
+                                            image.image?
+                                                .resizable()
+                                                .interpolation(.none)
+                                                .scaledToFit()
+                                                .frame(width: 50, height: 50)
                                         }
                                     }
+                                    Text(note.text)
+                                    Spacer()
+                                    if let imageURL = note.getImageURL(subimage: true) {
+                                        // 画像を非同期で表示する
+                                        AsyncImage(url: imageURL) { image in
+                                            image.image?
+                                                .resizable()
+                                                .interpolation(.none)
+                                                .scaledToFit()
+                                                .frame(width: 50, height: 50)
+                                        }
+                                    }
+                                }
                             }
                             .id(note.id.uuidString)
                             .listRowBackground(
@@ -110,7 +115,8 @@ struct ContentView: View {
                                     if manager.getCurrentNote()?.id == note.id {
                                         NoteActivityManager.endAll()
                                     }
-                                    note.deleteImage()
+                                    note.deleteImage(subimage: false)
+                                    note.deleteImage(subimage: true)
                                     notes.removeAll { $0.id == note.id }
                                     manager.saveNotes(notes)
                                 } label: {
@@ -173,7 +179,8 @@ struct ContentView: View {
                     var newNote = NoteData()
                     // 画像の保存を待ってからノートを保存する非同期処理。
                     Task {
-                        await newNote.saveImage(pickerItem)
+                        guard let imageName = await NoteData.saveImageToFile(pickerItem) else { return }
+                        newNote.saveImage(imageName, subimage: false)
                         notes.append(newNote)
                         manager.saveNotes(notes)
                         DispatchQueue.main.async {
@@ -190,11 +197,24 @@ struct ContentView: View {
         .onChange(of: scenePhase) {
             switch scenePhase {
             case .background:
-                manager.saveNotes(notes)
+                // データがある時かデータが確実に読み込めてる時
+                if !notes.isEmpty || isNotesLoaded {
+                    manager.saveNotes(notes) // データ保存
+                    isNotesLoaded = true // 保存した時点で確定
+                }
                 NoteActivityManager.refresh()
             case .inactive:
                 break
             case .active:
+                // 起動時にノートが読み込めなかった時にもう一度読み込む
+                // ノートが空の時且つ読み込みが確定してない時
+                if notes.isEmpty && !isNotesLoaded {
+                    notes = manager.getNotes() // データを読み込む
+                    // データがある時
+                    if !notes.isEmpty {
+                        isNotesLoaded = true // 確実に読み込めたのが確定
+                    }
+                }
                 // NoteActivityManagerのisActiveからLive Activityがオンかオフかを取得して、isActivityActiveに返り値を入れる
                 isActivityActive = NoteActivityManager.isActive()
             @unknown default:
@@ -203,7 +223,11 @@ struct ContentView: View {
         }
         // NavigationStackが表示された時に実行される。
         .onAppear {
-            notes = manager.getNotes()
+            notes = manager.getNotes() // データを読み込む
+            // データがある時
+            if !notes.isEmpty {
+                isNotesLoaded = true // 確実に読み込めたのが確定
+            }
         }
     }
 }

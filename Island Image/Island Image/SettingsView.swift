@@ -38,13 +38,11 @@ struct SettingsView: View {
                 }
                 Section {
                     Toggle(isOn: $trailingImage) {
-                        Text("画像を右側に表示")
+                        Text("メイン画像とサブ画像を反転")
                     }
                     .onChange(of: trailingImage) {
                         NoteActivityManager.refresh()
                     }
-                } footer: {
-                    Text("Dynamic Islandで画像を右側に表示します。")
                 }
                 Section {
                     Toggle(isOn: $foregroundColorBlack) {
