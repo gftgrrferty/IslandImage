@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+internal import System
 
 struct ShortcutHintView: View {
     @Environment(\.dismiss) private var dismiss
@@ -20,17 +21,10 @@ struct ShortcutHintView: View {
                     Text("なぜ必要か")
                 }
                 Section {
-                    Text("ショートカットのオートメーションで8時間ごとにアクティビティを開始するショートカットを設定してください。")
+                    Text("ショートカットのオートメーションで8時間ごとにアクティビティを開始するオートメーションを有効にしてください。")
+                    Link("オートメーションをダウンロード", destination: URL(string: "https://www.icloud.com/shortcuts/b192d0993ffb4b55985fca22dcd80cac")!)
                     HStack(spacing: 10) {
                         Image("ShortcutHint1")
-                            .resizable()
-                            .scaledToFit()
-                            .accessibilityLabel("オートメーションの作成画面。毎日8時すぐに実行に設定されている。")
-                        Image("ShortcutHint2")
-                            .resizable()
-                            .scaledToFit()
-                            .accessibilityLabel("Island Imageのライブアクティビティを開始ショートカットが設定されている")
-                        Image("ShortcutHint3")
                             .resizable()
                             .scaledToFit()
                             .accessibilityLabel("0時,8時,16時にオートメーションが設定されている画像")
