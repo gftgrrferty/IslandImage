@@ -13,6 +13,7 @@ nonisolated struct NoteActivityAttributes: ActivityAttributes {
         var noteText: String
         var imageURL: URL?
         var color: UInt32
+        var subimageURL: URL?
     }
 }
 
@@ -65,8 +66,9 @@ class NoteActivityManager {
         
         let contentState = NoteActivityAttributes.ContentState(
             noteText: currentNote?.text ?? "",
-            imageURL: currentNote?.getImageURL(),
-            color: currentNote?.color ?? 0x000000FF
+            imageURL: currentNote?.getImageURL(subimage: false),
+            color: currentNote?.color ?? 0x000000FF,
+            subimageURL: currentNote?.getImageURL(subimage: true)
         )
         
         return contentState

@@ -42,7 +42,7 @@ struct ContentView: View {
                         ForEach($notes, id: \.id) { $note in
                             NavigationLink(destination: EditNoteView(note: $note)) {
                                 HStack(spacing:20) {
-                                    if let imageURL = note.getImageURL() {
+                                    if let imageURL = note.getImageURL(subimage: false) {
                                         // 画像を非同期で表示する
                                         AsyncImage(url: imageURL) { image in
                                             image.image?
@@ -104,7 +104,8 @@ struct ContentView: View {
                                     if manager.getCurrentNote()?.id == note.id {
                                         NoteActivityManager.endAll()
                                     }
-                                    note.deleteImage()
+                                    note.deleteImage(subimage: false)
+                                    note.deleteImage(subimage: true)
                                     notes.removeAll { $0.id == note.id }
                                     manager.saveNotes(notes)
                                 } label: {
@@ -167,7 +168,8 @@ struct ContentView: View {
                     var newNote = NoteData()
                     // 画像の保存を待ってからノートを保存する非同期処理。
                     Task {
-                        await newNote.saveImage(pickerItem)
+                        guard let imageName = await NoteData.saveImageToFile(pickerItem) else { return }
+                        newNote.saveImage(imageName, subimage: false)
                         notes.append(newNote)
                         manager.saveNotes(notes)
                         DispatchQueue.main.async {

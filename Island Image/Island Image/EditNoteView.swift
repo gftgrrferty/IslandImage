@@ -6,20 +6,21 @@
 //
 
 import SwiftUI
+import _PhotosUI_SwiftUI
 
 struct EditNoteView: View {
     @Binding var note: NoteData
     @State var tmpColor: Color = Color.clear
+    @State private var pickerItem: PhotosPickerItem?
     
     var body: some View {
         
         List {
             Section("メイン画像") {
                 // 画像を表示
-                if let imageURL = note.getImageURL() {
+                if let imageURL = note.getImageURL(subimage: false) {
                     // 画像を非同期で表示する
                     AsyncImage(url: imageURL) { image in
-                        //
                         image.image?
                             .resizable()
                             .interpolation(.none)
@@ -27,6 +28,33 @@ struct EditNoteView: View {
                             .frame(width: 50)
                     }
                 }
+            }
+            Section("サブ画像") {
+                // サブ画像を表示
+                if let imageURL = note.getImageURL(subimage: true) {
+                    // 画像を非同期で表示する
+                    AsyncImage(url: imageURL) { image in
+                        image.image?
+                            .resizable()
+                            .interpolation(.none)
+                            .scaledToFit()
+                            .frame(width: 50)
+                    }
+                } else {
+                    PhotosPicker(selection: $pickerItem, matching: .images) {
+                        Label("追加", systemImage: "plus")
+                    }
+                }
+            }
+            .onChange(of: pickerItem) {
+                // ここでpickerItemがnilでないことを確定させる
+                guard let pickerItem else { return }
+                // 画像の保存を待ってからノートを保存する非同期処理。
+                Task { 
+                    guard let imageName = await NoteData.saveImageToFile(pickerItem) else { return }
+                    note.saveImage(imageName, subimage: true)
+                }
+                self.pickerItem = nil
             }
             
             Section("ノート") {
