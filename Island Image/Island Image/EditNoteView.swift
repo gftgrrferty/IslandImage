@@ -40,6 +40,20 @@ struct EditNoteView: View {
                             .scaledToFit()
                             .frame(width: 50)
                     }
+                    .swipeActions(edge: .trailing) {
+                        Button(role: .destructive) {
+                            note.deleteImage(subimage: true)
+                        } label: {
+                            Label("削除", systemImage: "trash")
+                        }
+                    }
+                    .contextMenu {
+                        Button(role: .destructive) {
+                            note.deleteImage(subimage: true)
+                        } label: {
+                            Label("削除", systemImage: "trash")
+                        }
+                    }
                 } else {
                     PhotosPicker(selection: $pickerItem, matching: .images) {
                         Label("追加", systemImage: "plus")

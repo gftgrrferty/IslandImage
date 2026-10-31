@@ -83,7 +83,7 @@ struct NoteData: Codable, Equatable, Identifiable {
     }
     
     // 画像削除
-    func deleteImage(subimage: Bool) {
+    mutating func deleteImage(subimage: Bool) {
         guard let image = subimage == true ? self.subimage : self.image else { return }
         guard var itemURL = FileManager.default.containerURL(
             forSecurityApplicationGroupIdentifier: appGroupID
@@ -93,5 +93,10 @@ struct NoteData: Codable, Equatable, Identifiable {
         itemURL.appendPathComponent("note_image", isDirectory: true)
         itemURL.appendPathComponent(image)
         _ = try? FileManager.default.removeItem(at: itemURL)
+        if subimage == true {
+            self.subimage = nil
+        } else {
+            self.image = nil
+        }
     }
 }
