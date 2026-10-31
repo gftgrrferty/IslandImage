@@ -83,19 +83,29 @@ struct NoteActivityWidget: Widget {
         
         var body: some View {
             HStack(alignment: .center, spacing: 10) {
+                if context.state.subimageURL != nil { Spacer() }
+                
                 if !userDefaults.bool(forKey: "trailingImage") {
                     NoteImage(imageURL: context.state.imageURL)
                 } else {
                     NoteImage(imageURL: context.state.subimageURL)
                 }
+                
+                if context.state.subimageURL != nil { Spacer() }
+                
                 if !context.state.noteText.isEmpty {
                     NoteText(noteText: context.state.noteText)
                 }
+                
+                if context.state.subimageURL != nil { Spacer() }
+                
                 if userDefaults.bool(forKey: "trailingImage") {
                     NoteImage(imageURL: context.state.imageURL)
                 } else {
                     NoteImage(imageURL: context.state.subimageURL)
                 }
+                
+                if context.state.subimageURL != nil { Spacer() }
             }
         }
     }
