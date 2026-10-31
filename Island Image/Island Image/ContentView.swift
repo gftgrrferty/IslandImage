@@ -49,10 +49,21 @@ struct ContentView: View {
                                                 .resizable()
                                                 .interpolation(.none)
                                                 .scaledToFit()
-                                                .frame(width: 50)
+                                                .frame(width: 50, height: 50)
                                         }
                                     }
                                     Text(note.text)
+                                    Spacer()
+                                    if let imageURL = note.getImageURL(subimage: true) {
+                                        // 画像を非同期で表示する
+                                        AsyncImage(url: imageURL) { image in
+                                            image.image?
+                                                .resizable()
+                                                .interpolation(.none)
+                                                .scaledToFit()
+                                                .frame(width: 50, height: 50)
+                                        }
+                                    }
                                 }
                             }
                             .id(note.id.uuidString)
