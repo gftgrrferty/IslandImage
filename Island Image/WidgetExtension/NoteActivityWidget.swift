@@ -25,6 +25,8 @@ struct NoteActivityWidget: Widget {
                     .interpolation(shouldPixelate(uiImage) ? .none : .medium)
                     .scaledToFit()
                     .frame(maxWidth: 45, maxHeight: 110/3)
+            } else {
+                EmptyView().frame(width: 0, height: 0)
             }
         }
         
@@ -51,12 +53,16 @@ struct NoteActivityWidget: Widget {
             HStack(alignment: .center, spacing: 10) {
                 if !userDefaults.bool(forKey: "trailingImage") {
                     NoteImage(imageURL: context.state.imageURL)
+                } else {
+                    NoteImage(imageURL: context.state.subimageURL)
                 }
                 if !context.state.noteText.isEmpty {
                     NoteText(noteText: context.state.noteText)
                 }
                 if userDefaults.bool(forKey: "trailingImage") {
                     NoteImage(imageURL: context.state.imageURL)
+                } else {
+                    NoteImage(imageURL: context.state.subimageURL)
                 }
             }
         }
@@ -84,6 +90,16 @@ struct NoteActivityWidget: Widget {
                     }
                     .frame(height: .infinity)
                 }
+                DynamicIslandExpandedRegion(
+                    userDefaults.bool(forKey: "trailingImage") ? .leading : .trailing
+                ) {
+                    VStack(alignment: .center) {
+                        Spacer()
+                        NoteImage(imageURL: context.state.subimageURL)
+                        Spacer()
+                    }
+                    .frame(height: .infinity)
+                }
                 DynamicIslandExpandedRegion(.center) {
                     NoteText(noteText: context.state.noteText)
                 }
@@ -91,10 +107,16 @@ struct NoteActivityWidget: Widget {
                 if !userDefaults.bool(forKey: "trailingImage") {
                     NoteImage(imageURL: context.state.imageURL)
                         .padding(.leading, autoPadding ? 4.5 : 0)
+                } else {
+                    NoteImage(imageURL: context.state.subimageURL)
+                        .padding(.leading, autoPadding ? 4.5 : 0)
                 }
             } compactTrailing: {
                 if userDefaults.bool(forKey: "trailingImage") {
                     NoteImage(imageURL: context.state.imageURL)
+                        .padding(.trailing, autoPadding ? 4.5 : 0)
+                } else {
+                    NoteImage(imageURL: context.state.subimageURL)
                         .padding(.trailing, autoPadding ? 4.5 : 0)
                 }
             } minimal: {
